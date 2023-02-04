@@ -2,7 +2,6 @@ export const configuration = () => ({
   NODE_ENV: process.env.NODE_ENV,
   db: {
     type: process.env.DB_TYPE,
-    synchronize: false,
     logging: true,
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT),
@@ -12,6 +11,11 @@ export const configuration = () => ({
     extra: {
       connectionLimit: 10,
     },
-    autoLoadEntities: true,
+    synchronize: "true",
+    entities: ["dist/entity/**/*.js"],
+    cli: {
+      entitiesDir: "src/entity",
+    },
   },
+  UPLOADED_FILES_DESTINATION: process.env.UPLOADED_FILES_DESTINATION,
 });
