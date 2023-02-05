@@ -17,5 +17,6 @@ export const configuration = () => ({
       entitiesDir: "src/entity",
     },
   },
-  UPLOADED_FILES_DESTINATION: process.env.UPLOADED_FILES_DESTINATION,
+  STORAGE_ENGINE: process.env.STORAGE_ENGINE,
+  SERVER_STATIC_FILES_BASE_URL: process.env.SERVER_STATIC_FILES_BASE_URL,
 });
