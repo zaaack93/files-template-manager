@@ -5,6 +5,7 @@ import { MongoRepository } from "typeorm";
 import { CreateTemplateDto } from "./dto/create-template.dto";
 import { UpdateTemplateDto } from "./dto/update-template.dto";
 import { StorageEngineService } from "@fleye-me/nestjs-storage-engine";
+var fs = require("fs");
 
 @Injectable()
 export class TemplatesService {
@@ -15,14 +16,13 @@ export class TemplatesService {
   ) {}
 
   async create(createTemplateDto: CreateTemplateDto) {
-    console.log(createTemplateDto.fileTemplate);
+    var data = fs.readFileSync(createTemplateDto.fileTemplate.path);
     const fileResult = await this.storageService.uploadFile({
-      filename: "example",
+      filename: `.${createTemplateDto.fileTemplate.extension}`,
       path: `Templates/${createTemplateDto.context}`,
-      buffer: createTemplateDto.fileTemplate.path,
-      mimeType: "application/pdf",
+      buffer: data,
+      mimeType: createTemplateDto.fileTemplate.mimeType,
     });
-    console.log(fileResult);
     return fileResult;
   }
 
