@@ -12,7 +12,7 @@ import path from "path";
     // https://docs.nestjs.com/techniques/configuration
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `src/config/envs/development.env`,
+      envFilePath: `${process.env.NODE_ENV}.env`,
       load: [configuration],
     }),
     // Database

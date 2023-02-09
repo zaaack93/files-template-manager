@@ -14,6 +14,6 @@ export class CreateTemplateDto {
 
   @IsFile()
   @MaxFileSize(1e6)
-  @HasMimeType(["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"])
+  // @HasMimeType(["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"])
   fileTemplate: FileSystemStoredFile;
 }

@@ -42,18 +42,15 @@ export class TemplatesService {
   async generateFromTemplate(id: string, data) {
     const existingTemplate: Template = await this.findOne(id);
     return new Promise((resolve, reject) => {
-      carbone.render(`uploads/${existingTemplate.path}/${existingTemplate.generated_name}`, data, {}, async (err, result) => {
+      carbone.render(`uploads/${existingTemplate.path}/${existingTemplate.generated_name}`, data, {convertTo : 'pdf'}, async (err, result) => {
         if (err) reject(err);
-        const fileUploaded = await this.storageService.uploadFile({
-          filename: `.${existingTemplate.generated_name.split(".")[1]}`,
-          path: `Templates-generated/${existingTemplate.context}`,
-          buffer: result,
-          mimeType: existingTemplate.mimetype,
-        });
-        resolve(fileUploaded);
+        // fs is used to create the PDF file from the render result
+        fs.writeFileSync('./uploads/Templates-generated/contect-teste/result1.pdf', result);
+        resolve('ff');
       });
     });
   }
+
   findAll(): Promise<Template[]> {
     return this.templateRepository.find();
   }

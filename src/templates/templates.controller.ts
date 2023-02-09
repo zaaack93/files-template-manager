@@ -27,8 +27,13 @@ export class TemplatesController {
   }
 
   @Post(":id/generate")
-  async generateTemplate(@Param("id") id: string,@Body() data,@Res({ passthrough: true }) response: Response) {
+  async generateTemplate(@Param("id") id: string,@Body() data) {
     return this.templatesService.generateFromTemplate(id,data)
+  }
+
+  @Post(":id/convert")
+  async convertTemplate(@Param("id") id: string,@Body() data) {
+    return this.templatesService.convertFile()
   }
 
   @Delete(":id")

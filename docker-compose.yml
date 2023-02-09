@@ -1,9 +1,26 @@
 version: "3"
 
 services:
+  carbone-api:
+    container_name: carbone-api
+    image: carbone-api:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - DB_TYPE=mongodb
+      - DB_HOST=mongodb
+      - DB_PORT=27017
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=files-template-manager
+      - STORAGE_ENGINE=disk
+      - SERVER_STATIC_FILES_BASE_URL=http://localhost:3000/uploads
   mongodb:
     image: mongo:5.0
     environment:
-      - MONGODB_DATABASE="test"
+      - MONGODB_DATABASE=files-template-manager
     ports:
       - 27017:27017
