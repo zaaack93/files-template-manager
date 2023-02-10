@@ -1,26 +1,51 @@
-version: "3"
-
+version: '3.3'
 services:
-  carbone-api:
-    container_name: carbone-api
-    image: carbone-api:1.0.0
+  dev:
+    container_name: nestjs_api_dev
+    image: nestjs-api-dev:1.0.0
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
     ports:
       - 3000:3000
-    environment:
-      - DB_TYPE=mongodb
-      - DB_HOST=mongodb
-      - DB_PORT=27017
-      - DB_USER=
-      - DB_PASSWORD=
-      - DB_NAME=files-template-manager
-      - STORAGE_ENGINE=disk
-      - SERVER_STATIC_FILES_BASE_URL=http://localhost:3000/uploads
+      - 3001:9229
+    networks:
+      - nesjs-network
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
   mongodb:
-    image: mongo:5.0
-    environment:
-      - MONGODB_DATABASE=files-template-manager
+    image : mongo:latest
+    container_name: mongodb
+    volumes:
+      - ./database:/data/db
     ports:
       - 27017:27017
+    networks:
+      - nesjs-network
+    restart: always
+  prod:
+    container_name: nestjs_api_prod
+    image: nestjs-api-prod:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
+    ports:
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - nesjs-network
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+networks:
+    nesjs-network:
+      driver: bridge

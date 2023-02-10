@@ -1,13 +1,28 @@
-FROM bcgovimages/alpine-node-libreoffice
+FROM bcgovimages/alpine-node-libreoffice AS development
 
-WORKDIR /workspace
+WORKDIR /usr/src/app
 
-COPY package*.json /workspace/
+COPY package*.json ./
 
-RUN npm i
+RUN npm install --only=development
 
 COPY . .
 
 RUN npm run build
 
-CMD ["npm","run", "start"]
+FROM bcgovimages/alpine-node-libreoffice as production
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install --only=production
+
+COPY . .
+
+COPY --from=development /usr/src/app/dist ./dist
+
+CMD ["node", "dist/main"]
