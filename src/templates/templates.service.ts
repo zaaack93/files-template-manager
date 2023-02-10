@@ -25,7 +25,7 @@ export class TemplatesService {
     try {
       const fileResult = await this.storageService.uploadFile({
         filename: `.${createTemplateDto.fileTemplate.extension}`,
-        path: `Templates/${createTemplateDto.context}`,
+        path: `templates/${createTemplateDto.context}`,
         buffer: data,
         mimeType: createTemplateDto.fileTemplate.mimeType,
       });
@@ -50,7 +50,7 @@ export class TemplatesService {
         if (err) reject(err);
         const fileUploaded = await this.storageService.uploadFile({
           filename: `.${options.convertTo ?? existingTemplate.generated_name.split(".")[1]}`,
-          path: `Templates-generated/${existingTemplate.context}`,
+          path: `templates-generated/${existingTemplate.context}`,
           buffer: result,
         });
         resolve(fileUploaded);
