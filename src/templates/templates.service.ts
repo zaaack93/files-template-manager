@@ -8,6 +8,10 @@ var fs = require("fs");
 import { ObjectID } from "mongodb";
 const carbone = require("carbone");
 
+interface ICarboneOptions{
+  convertTo?:String
+}
+
 @Injectable()
 export class TemplatesService {
   constructor(
@@ -39,14 +43,17 @@ export class TemplatesService {
     }
   }
 
-  async generateFromTemplate(id: string, data) {
+  async generateFromTemplate(id: string, data,options:ICarboneOptions={}) {
     const existingTemplate: Template = await this.findOne(id);
     return new Promise((resolve, reject) => {
-      carbone.render(`uploads/${existingTemplate.path}/${existingTemplate.generated_name}`, data, {convertTo : 'pdf'}, async (err, result) => {
+      carbone.render(`uploads/${existingTemplate.path}/${existingTemplate.generated_name}`, data, options, async (err, result) => {
         if (err) reject(err);
-        // fs is used to create the PDF file from the render result
-        fs.writeFileSync('./uploads/Templates-generated/contect-teste/result1.pdf', result);
-        resolve('ff');
+        const fileUploaded = await this.storageService.uploadFile({
+          filename: `.${options.convertTo ?? existingTemplate.generated_name.split(".")[1]}`,
+          path: `Templates-generated/${existingTemplate.context}`,
+          buffer: result,
+        });
+        resolve(fileUploaded);
       });
     });
   }

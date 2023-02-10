@@ -1,10 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, ValidationPipe, ParseFilePipe, StreamableFile, Res, NotFoundException } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, ValidationPipe, ParseFilePipe, StreamableFile, Res, NotFoundException, Query } from "@nestjs/common";
 import { TemplatesService } from "./templates.service";
 import { CreateTemplateDto } from "./dto/create-template.dto";
 import { UpdateTemplateDto } from "./dto/update-template.dto";
 import { Template } from "src/entity/template";
 import { FormDataRequest, FileSystemStoredFile } from "nestjs-form-data";
-import type { Response } from 'express';
 
 @Controller("templates")
 export class TemplatesController {
@@ -27,17 +26,13 @@ export class TemplatesController {
   }
 
   @Post(":id/generate")
-  async generateTemplate(@Param("id") id: string,@Body() data) {
-    return this.templatesService.generateFromTemplate(id,data)
-  }
-
-  @Post(":id/convert")
-  async convertTemplate(@Param("id") id: string,@Body() data) {
-    return this.templatesService.convertFile()
+  async generateTemplate(@Param("id") id: string,@Body() data,@Query() options) {
+    return this.templatesService.generateFromTemplate(id,data,options)
   }
 
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.templatesService.remove(id);
   }
+
 }
