@@ -1,5 +1,6 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <a href="https://carbone.io/" target="blank"><img src="https://avatars.githubusercontent.com/u/84321946?s=280&v=4" width="200" alt="Carbone Logo" /></a>
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
